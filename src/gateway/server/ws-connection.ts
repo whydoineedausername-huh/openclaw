@@ -371,6 +371,8 @@ export function attachGatewayWsConnectionHandler(params: AttachGatewayWsConnecti
       canvasHostUrl,
       connectNonce,
       resolvedAuth: getResolvedAuth(),
+      getRequiredSharedGatewaySessionGeneration:
+        params.getRequiredSharedGatewaySessionGeneration,
       rateLimiter,
       browserRateLimiter,
       gatewayMethods,
