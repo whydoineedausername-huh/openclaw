@@ -201,7 +201,6 @@ export function connectGateway(host: GatewayHost) {
   host.lastErrorCode = null;
   host.hello = null;
   host.connected = false;
-  host.execApprovalQueue = [];
   host.execApprovalError = null;
 
   const previousClient = host.client;
@@ -330,7 +329,11 @@ function handleTerminalChatEvent(
   // Reload history when tools were used so the persisted tool results
   // replace the now-cleared streaming state.
   if (hadToolEvents && state === "final") {
+    const completedRunId = runId ?? null;
     void loadChatHistory(host as unknown as ChatState).finally(() => {
+      if (completedRunId && host.chatRunId && host.chatRunId !== completedRunId) {
+        return;
+      }
       resetToolStream(toolHost);
       flushQueue();
     });
